@@ -91,3 +91,10 @@
   mask-composite: exclude;
   animation: gemini-sweep 2.5s cubic-bezier(1, 1, 1, 1) forwards;
 }
+
+/* Fix Sigma Controls UI */
+.react-sigma-controls { overflow: hidden; }
+.react-sigma-control { display: flex; align-items: center; justify-content: center; }
+.react-sigma-control button { display: flex !important; align-items: center; justify-content: center; cursor: pointer; color: #57534e; }
+.react-sigma-control svg { width: 18px; height: 18px; fill: currentColor; }
+

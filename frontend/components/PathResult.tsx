@@ -33,7 +33,7 @@ export function PathResult({ result }: PathResultProps) {
           Sự Kết Nối Hoàn Hảo
         </h3>
         <span className="px-5 py-2 bg-[#FAF9F6] text-[#B87C7C] border border-[#E8C8C8] rounded-full font-medium text-sm tracking-wide shadow-sm">
-          Khoảng cách: <span className="font-bold">{result.length}</span> Phân cấp
+          Khoảng cách: <span className="font-bold">{result.length}</span> Bước
         </span>
       </div>
 
@@ -67,11 +67,7 @@ export function PathResult({ result }: PathResultProps) {
 
               {/* Nhãn vai trò */}
               <span className="text-[11px] text-stone-400 mt-3 font-semibold uppercase tracking-widest">
-                {index === 0
-                  ? "Bắt đầu"
-                  : index === result.path.length - 1
-                  ? "Đích đến"
-                  : `Bước ${index}`}
+                Bước {index + 1}
               </span>
 
               {/* Mũi tên dọc cho màn hình điện thoại */}

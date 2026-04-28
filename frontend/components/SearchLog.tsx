@@ -18,7 +18,7 @@ export function SearchLog({ logs, isSearching }: SearchLogProps) {
   }, [logs]);
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 p-5 overflow-hidden flex flex-col h-72 shadow-[inset_0_2px_10px_rgb(0,0,0,0.02)]">
+    <div className="bg-white rounded-2xl border border-stone-200 p-5 overflow-hidden flex flex-col h-[360px] shadow-[inset_0_2px_10px_rgb(0,0,0,0.02)]">
       <div className="flex items-center justify-between border-b border-stone-100 pb-3 mb-3">
         <span className="text-stone-400 font-semibold uppercase tracking-widest text-[11px]">
           Nhật ký hệ thống
@@ -32,20 +32,33 @@ export function SearchLog({ logs, isSearching }: SearchLogProps) {
       </div>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
-        {logs.map((log, index) => (
-          <div
-            key={index}
-            className="text-stone-600 animate-fade-in flex gap-4 text-[13px] items-center"
-          >
-            <span className="text-stone-400 w-20 shrink-0 font-mono text-[11px] bg-stone-50 py-1 px-2 rounded-md border border-stone-100 text-center">
-              Level {log.level}
-            </span>
-            <span className="leading-relaxed">
-              Mở rộng lớp thứ {log.level}... Phân tích thêm {" "}
-              <span className="text-[#B87C7C] font-semibold">{log.count}</span> mối quan hệ.
-            </span>
-          </div>
-        ))}
+        {logs.map((log, index) => {
+          // Bảng màu cho từng cấp độ
+          const levelColors = [
+            "bg-emerald-50 border-emerald-100 text-emerald-600", // Level 0
+            "bg-sky-50 border-sky-100 text-sky-600", // Level 1
+            "bg-indigo-50 border-indigo-100 text-indigo-600", // Level 2
+            "bg-amber-50 border-amber-100 text-amber-600", // Level 3
+            "bg-[#FAF9F6] border-[#E8C8C8] text-[#B87C7C]", // Level 4
+            "bg-rose-50 border-rose-100 text-rose-600", // Level 5+
+          ];
+          const colorClass = levelColors[log.level] || levelColors[levelColors.length - 1];
+
+          return (
+            <div
+              key={index}
+              className="text-stone-600 animate-fade-in flex gap-4 text-[13px] items-center"
+            >
+              <span className={`w-20 shrink-0 font-mono font-semibold text-[11px] py-1 px-2 rounded-md border text-center ${colorClass}`}>
+                Level {log.level}
+              </span>
+              <span className="leading-relaxed">
+                Mở rộng lớp thứ {log.level}... Phân tích thêm {" "}
+                <span className="text-[#B87C7C] font-semibold">{log.count}</span> mối quan hệ.
+              </span>
+            </div>
+          );
+        })}
         {isSearching && (
           <div className="text-stone-400 animate-pulse mt-3 flex gap-4 text-[13px] items-center">
             <span className="w-20 shrink-0 text-center text-[18px]">
