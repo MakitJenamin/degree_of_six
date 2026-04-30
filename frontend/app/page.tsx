@@ -1,14 +1,28 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { SearchForm } from "../components/SearchForm";
 import { SearchLog } from "../components/SearchLog";
 import { PathResult } from "../components/PathResult";
-import { GraphCanvas } from "../components/GraphCanvas";
 import { DarkModeToggle } from "../components/DarkModeToggle";
 import { usePeople } from "../hooks/usePeople";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { useGraphData } from "../hooks/useGraphData";
+
+// GraphCanvas dùng Sigma.js (WebGL) → không thể render trên server
+// Phải dùng dynamic import với ssr: false để chỉ chạy ở client-side
+const GraphCanvas = dynamic(
+  () => import("../components/GraphCanvas").then((mod) => mod.GraphCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[600px] rounded-3xl border border-stone-100 dark:border-stone-800 flex items-center justify-center text-stone-400 dark:text-stone-500 italic text-sm">
+        Đang khởi động vũ trụ liên kết...
+      </div>
+    ),
+  }
+);
 
 export default function Home() {
   const { people, isLoading } = usePeople();
