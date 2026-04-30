@@ -2,9 +2,19 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  // logger: true → NestJS sẽ log tất cả HTTP request vào console (Render sẽ hiển thị)
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'warn', 'error'],
+  });
+
+  // Middleware log HTTP request — hiển thị trong Render Logs
+  // VD: [HTTP] GET /api/people 200 - 12ms - ::ffff:x.x.x.x
+  app.use((req: any, res: any, next: any) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      const ms = Date.now() - start;
+      console.log(`[HTTP] ${req.method} ${req.url} ${res.statusCode} - ${ms}ms - ${req.ip}`);
+    });
+    next();
   });
 
   // origin: true → server tự echo lại đúng Origin của request
@@ -18,3 +28,4 @@ async function bootstrap() {
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
+
