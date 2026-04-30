@@ -23,8 +23,8 @@ RUN npm ci --omit=dev
 # Copy compiled code từ stage builder
 COPY --from=builder /app/dist ./dist
 
-# Copy graph data vào image (file nặng, cần thiết để app chạy được)
-COPY ../data/graph.json ./data/graph.json
+# Copy graph data vào image — build context là ROOT repo, nên không có ../
+COPY data/graph.json ./data/graph.json
 
 EXPOSE 3001
 
