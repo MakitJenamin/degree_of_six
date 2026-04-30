@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${playfair.variable} ${dancing.variable} antialiased bg-[#FAF9F6] text-stone-800`}
+        className={`${inter.variable} ${playfair.variable} ${dancing.variable} antialiased bg-[#FAF9F6] dark:bg-stone-950 text-stone-800 dark:text-stone-100`}
         suppressHydrationWarning
       >
         {children}

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Kích hoạt dark mode bằng class "dark" trên thẻ <html> — cách Tailwind v4 */
+@variant dark (&:where(.dark, .dark *));
+
 @layer utilities {
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
@@ -97,4 +100,37 @@
 .react-sigma-control { display: flex; align-items: center; justify-content: center; }
 .react-sigma-control button { display: flex !important; align-items: center; justify-content: center; cursor: pointer; color: #57534e; }
 .react-sigma-control svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Override màu nền Sigma.js Canvas khi Dark Mode */
+.dark {
+  --sigma-background-color: #1c1917;
+  --sigma-controls-background-color: #292524;
+  --sigma-controls-background-color-hover: rgba(255, 255, 255, 0.1);
+  --sigma-controls-border-color: rgba(255, 255, 255, 0.15);
+  --sigma-controls-color: #d6d3d1;
+}
+
+/* Selector trực tiếp để chắc chắn override được — CSS var không reactive với Sigma */
+.dark div.react-sigma {
+  background: #1c1917 !important;
+}
+
+.dark .react-sigma-controls {
+  background-color: #292524 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark .react-sigma-control {
+  background-color: #292524 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .react-sigma-control button {
+  background-color: #292524 !important;
+  color: #d6d3d1 !important;
+}
+
+.dark .react-sigma-control button:hover {
+  background-color: #44403c !important;
+}
 

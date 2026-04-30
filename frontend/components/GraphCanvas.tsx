@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import {
   SigmaContainer,
   useSigma,
+  useRegisterEvents,
   ControlsContainer,
   ZoomControl,
   FullScreenControl,
@@ -33,7 +34,7 @@ function GraphUpdater({ logs, pathResult, graphData }: GraphCanvasProps) {
   const graph = sigma.getGraph();
   const { start, kill } = useWorkerLayoutForceAtlas2({
     settings: {
-      slowDown: 5,
+      slowDown: 1000,
       gravity: 2, // Lực hút trung tâm mạnh hơn để "chụm gần vào nhau"
       scalingRatio: 1, // Khoảng cách giữa các cụm
       barnesHutOptimize: true, // Bật tối ưu hoá cho đồ thị lớn
@@ -41,6 +42,26 @@ function GraphUpdater({ logs, pathResult, graphData }: GraphCanvasProps) {
   });
 
   const hasFadedRef = useRef(false);
+  const registerEvents = useRegisterEvents();
+
+  // Lắng nghe sự kiện click node → mở trang Wikipedia tương ứng
+  useEffect(() => {
+    registerEvents({
+      clickNode: (event) => {
+        const nodeName = event.node; // Tên node = tên diễn viên
+        // Đổi khoảng trắng thành dấu _ để tạo URL Wikipedia
+        const wikiSlug = nodeName.replace(/ /g, "_");
+        window.open(`https://en.wikipedia.org/wiki/${wikiSlug}`, "_blank");
+      },
+      // Đổi con trỏ chuột khi hover lên node để gợi ý có thể click
+      enterNode: () => {
+        sigma.getContainer().style.cursor = "pointer";
+      },
+      leaveNode: () => {
+        sigma.getContainer().style.cursor = "default";
+      },
+    });
+  }, [registerEvents, sigma]);
 
   // Khởi tạo đồ thị với đầy đủ mạng lưới node và edge
   useEffect(() => {
@@ -55,7 +76,7 @@ function GraphUpdater({ logs, pathResult, graphData }: GraphCanvasProps) {
           x: radius * Math.cos(angle),
           y: radius * Math.sin(angle),
           size: 4 + Math.random() * 2, // Cho node to hơn (4-6px)
-          label: "",
+          label: node,
           // Tô màu ngẫu nhiên để đồ thị rực rỡ
           color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
         });
@@ -86,7 +107,7 @@ function GraphUpdater({ logs, pathResult, graphData }: GraphCanvasProps) {
       // Cho thuật toán chạy 5 giây rồi tắt để tiết kiệm pin/CPU
       const timer = setTimeout(() => {
         kill();
-      }, 5000);
+      }, 10000);
 
       return () => {
         clearTimeout(timer);
@@ -217,7 +238,7 @@ function GraphUpdater({ logs, pathResult, graphData }: GraphCanvasProps) {
 
 export function GraphCanvas({ logs, pathResult, graphData }: GraphCanvasProps) {
   return (
-    <div className="bg-white rounded-3xl border border-stone-100 h-[500px] shadow-[inset_0_2px_10px_rgb(0,0,0,0.02)] overflow-hidden relative">
+    <div className="bg-white dark:bg-stone-900 rounded-3xl border border-stone-100 dark:border-stone-800 h-[600px] shadow-[inset_0_2px_10px_rgb(0,0,0,0.02)] overflow-hidden relative">
       {!graphData ? (
         <div className="absolute inset-0 flex items-center justify-center text-stone-400 italic z-10">
           Đang tải toàn bộ vũ trụ liên kết từ máy chủ...
@@ -225,7 +246,7 @@ export function GraphCanvas({ logs, pathResult, graphData }: GraphCanvasProps) {
       ) : null}
 
       {/* Chú thích màu sắc (Legend) */}
-      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm border border-stone-100 p-3.5 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.04)] z-10 flex flex-col gap-2.5 text-[13px] text-stone-600 font-medium">
+      <div className="absolute top-4 left-4 bg-white/95 dark:bg-stone-800/95 backdrop-blur-sm border border-stone-100 dark:border-stone-700 p-3.5 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.04)] z-10 flex flex-col gap-2.5 text-[13px] text-stone-600 dark:text-stone-300 font-medium">
         <div className="flex items-center gap-2.5">
           <div className="w-3.5 h-3.5 rounded-full bg-[#10b981] shadow-inner"></div>
           <span>Điểm bắt đầu</span>

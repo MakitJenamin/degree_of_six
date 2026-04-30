@@ -21,7 +21,8 @@ export function useWebSocket() {
 
   // Khởi tạo kết nối 1 lần duy nhất khi Component Mount
   useEffect(() => {
-    const newSocket = io('http://localhost:3001');
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    const newSocket = io(backendUrl);
     setSocket(newSocket);
 
     // Dọn dẹp khi Component bị tắt đi

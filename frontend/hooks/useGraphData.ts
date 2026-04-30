@@ -4,7 +4,8 @@ export function useGraphData() {
   const [graphData, setGraphData] = useState<Record<string, string[]> | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/graph")
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    fetch(`${backendUrl}/api/graph`)
       .then((res) => res.json())
       .then((data) => setGraphData(data))
       .catch(console.error);

@@ -40,7 +40,7 @@ function AutocompleteInput({
 
   return (
     <div className="flex-1 w-full relative" ref={wrapperRef}>
-      <label className="block text-[13px] font-semibold text-stone-500 uppercase tracking-wider mb-2">
+      <label className="block text-[13px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-2">
         {label}
       </label>
       <div className="relative">
@@ -56,7 +56,7 @@ function AutocompleteInput({
             setIsOpen(true);
           }}
           disabled={disabled}
-          className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3.5 pr-10 text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#E8C8C8] focus:border-[#D08B8B] transition-all shadow-sm placeholder:text-stone-300 font-medium"
+          className="w-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-4 py-3.5 pr-10 text-stone-800 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-[#E8C8C8] focus:border-[#D08B8B] transition-all shadow-sm placeholder:text-stone-300 dark:placeholder:text-stone-500 font-medium"
           placeholder={placeholder}
         />
         {value && !disabled && (
@@ -74,12 +74,12 @@ function AutocompleteInput({
       </div>
 
       {isOpen && !disabled && (
-        <ul className="absolute z-50 w-full mt-2 bg-white border border-stone-100 rounded-xl shadow-xl max-h-60 overflow-y-auto custom-scrollbar ring-1 ring-black/5 py-2">
+        <ul className="absolute z-50 w-full mt-2 bg-white dark:bg-stone-800 border border-stone-100 dark:border-stone-700 rounded-xl shadow-xl max-h-60 overflow-y-auto custom-scrollbar ring-1 ring-black/5 py-2">
           {filteredPeople.length > 0 ? (
             filteredPeople.map((name) => (
               <li
                 key={name}
-                className="px-5 py-2.5 hover:bg-[#FAF9F6] hover:text-[#D08B8B] cursor-pointer text-stone-600 transition-colors text-sm font-medium"
+                className="px-5 py-2.5 hover:bg-[#FAF9F6] dark:hover:bg-stone-700 hover:text-[#D08B8B] cursor-pointer text-stone-600 dark:text-stone-300 transition-colors text-sm font-medium"
                 onClick={() => {
                   onChange(name);
                   setIsOpen(false);
@@ -125,7 +125,7 @@ export function SearchForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 md:p-8 rounded-3xl border border-stone-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+      className="bg-white dark:bg-stone-900 p-6 md:p-8 rounded-3xl border border-stone-100 dark:border-stone-800 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
     >
       <div className="flex flex-col md:flex-row gap-6 items-end">
         {/* Điểm Bắt Đầu */}
@@ -175,7 +175,7 @@ export function SearchForm({
               setEndNode("");
             }}
             disabled={isLoadingPeople || isSearching}
-            className="w-full md:w-auto px-6 py-3.5 rounded-xl font-semibold text-stone-500 bg-[#FAF9F6] border border-stone-200 hover:bg-stone-100 hover:text-stone-700 transition-all active:scale-[0.98] shadow-sm"
+            className="w-full md:w-auto px-6 py-3.5 rounded-xl font-semibold text-stone-500 dark:text-stone-400 bg-[#FAF9F6] dark:bg-stone-800 border border-stone-200 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700 hover:text-stone-700 dark:hover:text-stone-200 transition-all active:scale-[0.98] shadow-sm"
           >
             Làm Lại
           </button>

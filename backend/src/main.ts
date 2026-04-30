@@ -4,9 +4,15 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Mở cửa CORS để cấp quyền cho Frontend (localhost:3000) được phép chui vào lấy API
+  // CORS: cho phép cả local lẫn production Vercel domain
+  const allowedOrigins = [
+    'http://localhost:3000',
+    process.env.FRONTEND_URL,       // VD: https://your-app.vercel.app
+  ].filter(Boolean) as string[];
+
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: allowedOrigins,
+    credentials: true,
   });
 
   await app.listen(process.env.PORT ?? 3001);

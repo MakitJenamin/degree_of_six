@@ -6,7 +6,8 @@ export function usePeople() {
 
   useEffect(() => {
     // Tự động gọi API lấy danh sách tên ngay khi trang Web vừa load xong
-    fetch('http://localhost:3001/api/people')
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    fetch(`${backendUrl}/api/people`)
       .then((res) => res.json())
       .then((data) => {
         setPeople(data);
