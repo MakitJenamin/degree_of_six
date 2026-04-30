@@ -8,13 +8,9 @@ import { Socket } from 'socket.io';
 import { GraphService } from './graph.service';
 import { WsMessage } from '../types';
 
-// CORS cho Socket.io: đọc từ env variable để hỗ trợ cả local lẫn production
-const allowedOrigins = [
-  'http://localhost:3000',
-  process.env.FRONTEND_URL,
-].filter(Boolean) as string[];
-
-@WebSocketGateway({ cors: { origin: allowedOrigins, credentials: true } })
+// origin: true → server tự echo lại đúng Origin của request
+// Phù hợp cho public API / open-source project
+@WebSocketGateway({ cors: { origin: true, credentials: true } })
 export class GraphGateway {
   constructor(private readonly graphService: GraphService) {}
 

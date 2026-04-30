@@ -4,14 +4,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS: cho phép cả local lẫn production Vercel domain
-  const allowedOrigins = [
-    'http://localhost:3000',
-    process.env.FRONTEND_URL,       // VD: https://your-app.vercel.app
-  ].filter(Boolean) as string[];
-
+  // origin: true → server tự echo lại đúng Origin của request
+  // Phù hợp cho public API / open-source project
   app.enableCors({
-    origin: allowedOrigins,
+    origin: true,
     credentials: true,
   });
 
