@@ -24,6 +24,9 @@ COPY --from=builder /app/dist ./dist
 # Copy graph data (giờ dùng được vì context là root)
 COPY data/graph.json ./data/graph.json
 
+# Chỉ rõ đường dẫn graph.json trong container (cwd = /app, data nằm ở /app/data)
+ENV GRAPH_DATA_PATH=/app/data/graph.json
+
 EXPOSE 3001
 
 CMD ["node", "dist/src/main.js"]

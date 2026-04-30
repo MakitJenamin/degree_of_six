@@ -15,7 +15,10 @@ export class GraphService implements OnModuleInit {
 
   private loadGraphFromDisk() {
     try {
-      const graphPath = path.join(process.cwd(), '..', 'data', 'graph.json');
+      // GRAPH_DATA_PATH env var: set trong Docker → /app/data/graph.json
+      // Fallback khi local npm run dev: ../data/graph.json (từ backend/ lên root)
+      const graphPath = process.env.GRAPH_DATA_PATH ||
+        path.join(process.cwd(), '..', 'data', 'graph.json');
       this.logger.log(`Đang đọc file graph tại: ${graphPath}`);
 
       const fileContent = fs.readFileSync(graphPath, 'utf-8');
