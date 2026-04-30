@@ -3,12 +3,11 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files trước để tận dụng Docker layer cache
-COPY package*.json ./
+# Build context = ROOT repo, nên phải chỉ rõ thư mục backend/
+COPY backend/package*.json ./
 RUN npm ci
 
-# Copy source và build
-COPY . .
+COPY backend/ .
 RUN npm run build
 
 # ─── Stage 2: Production ──────────────────────────────────────
@@ -16,14 +15,13 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Chỉ cài production dependencies
-COPY package*.json ./
+COPY backend/package*.json ./
 RUN npm ci --omit=dev
 
 # Copy compiled code từ stage builder
 COPY --from=builder /app/dist ./dist
 
-# Copy graph data vào image — build context là ROOT repo, nên không có ../
+# Copy graph data (giờ dùng được vì context là root)
 COPY data/graph.json ./data/graph.json
 
 EXPOSE 3001
