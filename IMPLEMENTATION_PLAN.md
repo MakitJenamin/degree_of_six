@@ -8,16 +8,16 @@
 
 ## Tổng Quan Các Phase
 
-| Phase | Tên | Mô tả | Độ khó |
-|-------|-----|--------|--------|
-| 0 | [Setup Dự Án](#phase-0-setup-dự-án) | Khởi tạo Next.js + NestJS | ⭐ |
-| 1 | [Crawl Wikipedia](#phase-1-crawl-dữ-liệu-wikipedia) | Thu thập data, tạo graph.json | ⭐⭐ |
-| 2 | [Backend Core](#phase-2-backend-core---bfs--rest-api) | Load graph, BFS, REST API | ⭐⭐⭐ |
-| 3 | [WebSocket](#phase-3-websocket---bfs-real-time) | Stream BFS qua WS | ⭐⭐⭐ |
-| 4 | [Frontend UI](#phase-4-frontend---search-ui) | Giao diện search + autocomplete | ⭐⭐ |
-| 5 | [Graph Viz](#phase-5-frontend---graph-visualization) | Vẽ network graph | ⭐⭐⭐⭐ |
-| 6 | [Polish](#phase-6-polish--animations) | Animation, responsive, hoàn thiện | ⭐⭐ |
-| 7 | [Deploy](#phase-7-docker--deploy) | Docker, đưa lên production | ⭐⭐ |
+| Phase | Tên                                                   | Mô tả                             | Độ khó   |
+| ----- | ----------------------------------------------------- | --------------------------------- | -------- |
+| 0     | [Setup Dự Án](#phase-0-setup-dự-án)                   | Khởi tạo Next.js + NestJS         | ⭐       |
+| 1     | [Crawl Wikipedia](#phase-1-crawl-dữ-liệu-wikipedia)   | Thu thập data, tạo graph.json     | ⭐⭐     |
+| 2     | [Backend Core](#phase-2-backend-core---bfs--rest-api) | Load graph, BFS, REST API         | ⭐⭐⭐   |
+| 3     | [WebSocket](#phase-3-websocket---bfs-real-time)       | Stream BFS qua WS                 | ⭐⭐⭐   |
+| 4     | [Frontend UI](#phase-4-frontend---search-ui)          | Giao diện search + autocomplete   | ⭐⭐     |
+| 5     | [Graph Viz](#phase-5-frontend---graph-visualization)  | Vẽ network graph                  | ⭐⭐⭐⭐ |
+| 6     | [Polish](#phase-6-polish--animations)                 | Animation, responsive, hoàn thiện | ⭐⭐     |
+| 7     | [Deploy](#phase-7-docker--deploy)                     | Docker, đưa lên production        | ⭐⭐     |
 
 ---
 
@@ -69,6 +69,7 @@ degree_of_six/
 ---
 
 ## Phase 0: Setup Dự Án
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Khởi tạo 2 project (frontend + backend) và chạy được
 
@@ -86,12 +87,13 @@ npx -y create-next-app@latest ./frontend
 ```
 
 Khi được hỏi, chọn:
+
 - TypeScript? → **Yes**
 - ESLint? → **Yes**
 - Tailwind CSS? → **Yes**
 - `src/` directory? → **No** (dùng `app/` trực tiếp)
 - App Router? → **Yes**
-- Import alias? → **Mặc định @/***
+- Import alias? → **Mặc định @/\***
 
 ### Bước 0.3 — Khởi tạo NestJS (Backend)
 
@@ -118,6 +120,7 @@ cd backend && npm run start:dev
 ```
 
 ### ✅ Checklist Phase 0
+
 - [ ] Frontend chạy trên http://localhost:3000
 - [ ] Backend chạy trên http://localhost:3001 (đổi port trong `main.ts`)
 - [ ] Cả 2 đều không báo lỗi
@@ -128,12 +131,14 @@ cd backend && npm run start:dev
 ---
 
 ## Phase 1: Crawl Dữ Liệu Wikipedia
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Tạo file `graph.json` chứa mạng lưới liên kết Wikipedia
 
 ### Bước 1.1 — Chuẩn bị danh sách nhân vật (seed_names.txt)
 
 Bạn có 2 lựa chọn:
+
 - **Cách 1 (Nhanh)**: Download file `seed_names.txt` từ repo gốc: https://raw.githubusercontent.com/Rani-Codes/sixth_degree/main/seed_names.txt
 - **Cách 2 (Tự làm)**: Tạo danh sách nhỏ hơn (~100 người) để test nhanh
 
@@ -152,6 +157,7 @@ Steve Jobs
 Tạo file `scripts/crawl-wikipedia.ts`:
 
 **Ý tưởng của script:**
+
 ```
 Với MỖI tên người trong seed_names.txt:
   1. Gọi Wikipedia API → lấy tất cả links trong trang đó
@@ -162,11 +168,13 @@ Cuối cùng → ghi ra file graph.json
 ```
 
 **Wikipedia API cần gọi:**
+
 ```
 https://en.wikipedia.org/w/api.php?action=query&titles=Albert_Einstein&prop=links&pllimit=max&format=json
 ```
 
 **Giải thích các tham số:**
+
 - `action=query` → yêu cầu truy vấn dữ liệu
 - `titles=Albert_Einstein` → trang cần lấy (dấu cách = dấu `_`)
 - `prop=links` → lấy tất cả links trong bài
@@ -184,6 +192,7 @@ npx tsx scripts/crawl-wikipedia.ts
 ```
 
 **Kết quả file `graph.json` sẽ trông như:**
+
 ```json
 {
   "Albert Einstein": ["Marie Curie", "Max Planck", "Niels Bohr"],
@@ -194,6 +203,7 @@ npx tsx scripts/crawl-wikipedia.ts
 ```
 
 ### ✅ Checklist Phase 1
+
 - [ ] File `data/seed_names.txt` có ít nhất 100 tên
 - [ ] Script crawl chạy thành công
 - [ ] File `data/graph.json` được tạo ra
@@ -205,6 +215,7 @@ npx tsx scripts/crawl-wikipedia.ts
 ---
 
 ## Phase 2: Backend Core — BFS + REST API
+
 **Trạng thái**: `pending`
 **Mục tiêu**: NestJS load được graph, chạy được BFS, có REST API
 
@@ -219,13 +230,13 @@ export type Graph = Record<string, string[]>;
 
 // Kết quả BFS trả về
 export interface BfsResult {
-  path: string[];      // Đường đi: ["Einstein", "Curie", "Obama"]
-  length: number;      // Số bước: 3
+  path: string[]; // Đường đi: ["Einstein", "Curie", "Obama"]
+  length: number; // Số bước: 3
 }
 
 // Tin nhắn WebSocket gửi cho frontend
 export interface WsMessage {
-  type: 'level_explored' | 'node_explored' | 'path_found' | 'error';
+  type: "level_explored" | "node_explored" | "path_found" | "error";
   data: any;
 }
 ```
@@ -235,11 +246,13 @@ export interface WsMessage {
 Tạo `backend/src/graph/graph.service.ts`:
 
 **Chức năng:**
+
 1. Khi NestJS khởi động → đọc `graph.json` → lưu vào RAM
 2. Hàm `getPeople()` → trả về danh sách tất cả tên
 3. Hàm `bfs(start, end)` → chạy thuật toán BFS, trả về đường đi ngắn nhất
 
 **Thuật toán BFS (pseudocode):**
+
 ```
 function bfs(graph, start, end):
     queue = [start]           // Hàng đợi: bắt đầu từ start
@@ -271,10 +284,10 @@ Tạo `backend/src/graph/graph.controller.ts`:
 
 **2 endpoints:**
 
-| Method | URL | Trả về | Mục đích |
-|--------|-----|--------|----------|
-| `GET` | `/api/people` | `string[]` (danh sách tên) | Cho frontend hiển thị autocomplete |
-| `GET` | `/api/graph` | `Graph` (toàn bộ graph) | Cho frontend vẽ network ban đầu |
+| Method | URL           | Trả về                     | Mục đích                           |
+| ------ | ------------- | -------------------------- | ---------------------------------- |
+| `GET`  | `/api/people` | `string[]` (danh sách tên) | Cho frontend hiển thị autocomplete |
+| `GET`  | `/api/graph`  | `Graph` (toàn bộ graph)    | Cho frontend vẽ network ban đầu    |
 
 ### Bước 2.4 — Bật CORS
 
@@ -282,7 +295,7 @@ Trong `backend/src/main.ts`, bật CORS để frontend (port 3000) gọi đượ
 
 ```typescript
 app.enableCors({
-  origin: 'http://localhost:3000', // Cho phép frontend gọi
+  origin: "http://localhost:3000", // Cho phép frontend gọi
 });
 ```
 
@@ -297,6 +310,7 @@ GET http://localhost:3001/api/graph
 ```
 
 ### ✅ Checklist Phase 2
+
 - [ ] NestJS khởi động → log ra "Loaded graph with X nodes"
 - [ ] `GET /api/people` trả về danh sách tên
 - [ ] `GET /api/graph` trả về graph data
@@ -305,6 +319,7 @@ GET http://localhost:3001/api/graph
 ---
 
 ## Phase 3: WebSocket — BFS Real-time
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Frontend gửi 2 tên → Backend stream từng bước BFS qua WebSocket
 
@@ -313,6 +328,7 @@ GET http://localhost:3001/api/graph
 Tạo `backend/src/graph/graph.gateway.ts`:
 
 **Giải thích WebSocket trong NestJS:**
+
 ```
 NestJS dùng "Gateway" để xử lý WebSocket.
 Gateway giống Controller, nhưng thay vì HTTP request/response,
@@ -320,6 +336,7 @@ nó lắng nghe "events" và gửi "events" qua kết nối WS.
 ```
 
 **Flow WebSocket:**
+
 ```
 Frontend gửi event "search":
   { startNode: "Einstein", endNode: "Obama" }
@@ -334,6 +351,7 @@ Backend tìm thấy path → gửi event "path_found"
 BFS gốc chạy "âm thầm" → cần sửa để **mỗi khi xong 1 level**, gọi callback báo cho Gateway biết → Gateway gửi WS message cho frontend.
 
 **Ý tưởng:**
+
 ```typescript
 // BFS có callback
 bfsWithCallback(start, end, onLevelComplete) {
@@ -349,14 +367,15 @@ bfsWithCallback(start, end, onLevelComplete) {
 
 ### Bước 3.3 — Các message types gửi qua WS
 
-| Event name | Khi nào | Data gửi kèm |
-|------------|---------|---------------|
-| `level_explored` | Mỗi level BFS xong | `{ level: 1, nodes: ["Curie", "Bohr"], count: 2 }` |
-| `node_explored` | Cho từng node trên path cuối | `{ level: 2, node: "Roosevelt", nodesExploredAtLevel: 150 }` |
-| `path_found` | Tìm thấy đường đi | `{ path: ["Einstein", "Curie", "Obama"], length: 3 }` |
-| `error` | Không tìm thấy / lỗi | `{ message: "No path found" }` |
+| Event name       | Khi nào                      | Data gửi kèm                                                 |
+| ---------------- | ---------------------------- | ------------------------------------------------------------ |
+| `level_explored` | Mỗi level BFS xong           | `{ level: 1, nodes: ["Curie", "Bohr"], count: 2 }`           |
+| `node_explored`  | Cho từng node trên path cuối | `{ level: 2, node: "Roosevelt", nodesExploredAtLevel: 150 }` |
+| `path_found`     | Tìm thấy đường đi            | `{ path: ["Einstein", "Curie", "Obama"], length: 3 }`        |
+| `error`          | Không tìm thấy / lỗi         | `{ message: "No path found" }`                               |
 
 ### ✅ Checklist Phase 3
+
 - [ ] WebSocket Gateway chạy được
 - [ ] Gửi search event → nhận được messages
 - [ ] Nhận được `level_explored` theo từng level
@@ -364,6 +383,7 @@ bfsWithCallback(start, end, onLevelComplete) {
 
 > [!TIP]
 > **Test WebSocket nhanh**: Dùng extension "WebSocket King" trên Chrome hoặc `wscat` trên terminal.
+>
 > ```bash
 > npx wscat -c ws://localhost:3001
 > ```
@@ -371,6 +391,7 @@ bfsWithCallback(start, end, onLevelComplete) {
 ---
 
 ## Phase 4: Frontend — Search UI
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Trang chính có form tìm kiếm + hiển thị kết quả real-time
 
@@ -406,6 +427,7 @@ bfsWithCallback(start, end, onLevelComplete) {
 ### Bước 4.2 — Components cần tạo
 
 **Component 1: `SearchForm.tsx`**
+
 ```
 Chức năng:
 - 2 ô input với autocomplete (gõ → gợi ý tên)
@@ -415,6 +437,7 @@ Chức năng:
 ```
 
 **Component 2: `SearchLog.tsx`**
+
 ```
 Chức năng:
 - Hiển thị danh sách các bước BFS đang diễn ra
@@ -424,6 +447,7 @@ Chức năng:
 ```
 
 **Component 3: `PathResult.tsx`**
+
 ```
 Chức năng:
 - Hiển thị đường đi: A → B → C → D
@@ -442,6 +466,7 @@ Chức năng:
 ```
 
 **Flow trong hook:**
+
 ```
 1. User bấm Search
 2. Hook mở WS connection
@@ -463,6 +488,7 @@ Chức năng:
 ```
 
 ### ✅ Checklist Phase 4
+
 - [ ] Autocomplete hoạt động — gõ tên → gợi ý
 - [ ] Bấm Search → WebSocket kết nối thành công
 - [ ] Search Log hiển thị từng level real-time
@@ -472,6 +498,7 @@ Chức năng:
 ---
 
 ## Phase 5: Frontend — Graph Visualization
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Vẽ mạng lưới nodes và edges, highlight path tìm được
 
@@ -483,6 +510,7 @@ npm install graphology sigma @react-sigma/core
 ```
 
 **Giải thích thư viện:**
+
 - **Graphology**: Quản lý dữ liệu graph (nodes, edges) trong JavaScript
 - **Sigma.js**: Render (vẽ) graph lên canvas HTML5 — hỗ trợ zoom, pan, click
 - **@react-sigma/core**: Wrapper của Sigma.js cho React
@@ -490,6 +518,7 @@ npm install graphology sigma @react-sigma/core
 ### Bước 5.2 — Component `GraphCanvas.tsx`
 
 **Chức năng:**
+
 ```
 1. Nhận data từ WebSocket (nodes explored ở mỗi level)
 2. Thêm nodes vào graph (Graphology)
@@ -525,6 +554,7 @@ npm install graphology-layout graphology-layout-forceatlas2
 ```
 
 ### ✅ Checklist Phase 5
+
 - [ ] Graph canvas hiển thị được
 - [ ] Explored nodes xuất hiện real-time theo mỗi level BFS
 - [ ] Path được highlight rõ ràng (màu khác, size lớn)
@@ -537,6 +567,7 @@ npm install graphology-layout graphology-layout-forceatlas2
 ---
 
 ## Phase 6: Polish & Animations
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Làm UI đẹp, animation mượt, responsive
 
@@ -579,6 +610,7 @@ Thiết kế tổng thể:
 ```
 
 ### ✅ Checklist Phase 6
+
 - [ ] Dark mode đẹp, nhìn chuyên nghiệp
 - [ ] Animations mượt, không lag
 - [ ] Responsive trên mobile
@@ -588,6 +620,7 @@ Thiết kế tổng thể:
 ---
 
 ## Phase 7: Docker & Deploy
+
 **Trạng thái**: `pending`
 **Mục tiêu**: Đóng gói + deploy lên production
 
@@ -623,14 +656,15 @@ CMD ["node", "dist/main.js"]
 
 ### Bước 7.2 — Deploy options
 
-| Platform | Miễn phí? | Ghi chú |
-|----------|-----------|---------|
-| **Railway** | ✅ Free tier | Đơn giản nhất, connect GitHub là xong |
-| **Render** | ✅ Free tier | Tương tự Railway |
-| **Digital Ocean** | 💰 ~$5/tháng | Ổn định hơn, dùng credit sinh viên |
-| **VPS tự quản** | 💰 | Cần biết Linux, Nginx |
+| Platform          | Miễn phí?    | Ghi chú                               |
+| ----------------- | ------------ | ------------------------------------- |
+| **Railway**       | ✅ Free tier | Đơn giản nhất, connect GitHub là xong |
+| **Render**        | ✅ Free tier | Tương tự Railway                      |
+| **Digital Ocean** | 💰 ~$5/tháng | Ổn định hơn, dùng credit sinh viên    |
+| **VPS tự quản**   | 💰           | Cần biết Linux, Nginx                 |
 
 ### ✅ Checklist Phase 7
+
 - [ ] Docker build thành công
 - [ ] Docker run local hoạt động
 - [ ] Deploy lên platform chọn
@@ -639,6 +673,8 @@ CMD ["node", "dist/main.js"]
 ---
 
 ## Lộ Trình Thời Gian & Ưu Tiên
+
+rồi
 
 ```
 Phase 0 (Setup) ─────────────────── 1-2 giờ
@@ -671,6 +707,7 @@ Phase 7 (Deploy) ───────────────── 2-3 giờ  
 ## Tips Cho Sinh Viên
 
 ### 🧪 Test từng bước nhỏ
+
 ```
 ❌ ĐỪNG: Code xong hết rồi mới test
 ✅ NÊN:  Code 1 function → test ngay → hoạt động → tiếp
@@ -682,6 +719,7 @@ Ví dụ Phase 2:
 ```
 
 ### 🐛 Khi bị bug
+
 ```
 1. Đọc error message (thường nó nói rõ lỗi gì)
 2. console.log() data ở mỗi bước
@@ -690,6 +728,7 @@ Ví dụ Phase 2:
 ```
 
 ### 📁 Git commit thường xuyên
+
 ```bash
 git init
 git add .
@@ -700,6 +739,7 @@ git commit -m "Phase 1: crawl Wikipedia completed, graph.json generated"
 ```
 
 ### 📚 Tài liệu tham khảo
+
 - [NestJS WebSocket Gateway docs](https://docs.nestjs.com/websockets/gateways)
 - [Next.js App Router docs](https://nextjs.org/docs/app)
 - [Sigma.js examples](https://www.sigmajs.org/)

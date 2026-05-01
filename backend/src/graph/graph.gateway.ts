@@ -8,9 +8,15 @@ import { Socket } from 'socket.io';
 import { GraphService } from './graph.service';
 import { WsMessage } from '../types';
 
-// origin: true → server tự echo lại đúng Origin của request
-// Phù hợp cho public API / open-source project
-@WebSocketGateway({ cors: { origin: true, credentials: true } })
+// Chỉ cho phép localhost và domain Vercel production
+// Trim trailing slash để tránh mismatch
+const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, '');
+const allowedOrigins = [
+  'http://localhost:3000',
+  frontendUrl,
+].filter(Boolean) as string[];
+
+@WebSocketGateway({ cors: { origin: allowedOrigins, credentials: true } })
 export class GraphGateway {
   constructor(private readonly graphService: GraphService) {}
 

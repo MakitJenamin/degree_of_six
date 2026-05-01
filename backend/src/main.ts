@@ -17,10 +17,16 @@ async function bootstrap() {
     next();
   });
 
-  // origin: true → server tự echo lại đúng Origin của request
-  // Phù hợp cho public API / open-source project
+  // Trim trailing slash để tránh mismatch: "vercel.app/" ≠ "vercel.app"
+  const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, '');
+
+  const allowedOrigins = [
+    'http://localhost:3000',
+    frontendUrl,
+  ].filter(Boolean) as string[];
+
   app.enableCors({
-    origin: true,
+    origin: allowedOrigins,
     credentials: true,
   });
 
